@@ -1,19 +1,16 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef KMEANS_H
+#define KMEANS_H
+#include "matrix.h"
 
 typedef struct {
-    double *data;  // 1D array for contiguous memory
-    int rows;
-    int cols;
-} Matrix;
+    Matrix *centroids;  // k x n matrix (k clusters, n features)
+    int *assignments;   // Cluster assignment for each data point
+    int k;              // Number of clusters
+} KMeans;
 
-// memory managment
-Matrix* matrix_create(int rows, int cols);
-void matrix_free(Matrix *m);
-
-void matrix_add(const Matrix *a, const Matrix *b, Matrix *result);
-void matrix_multiply(const Matrix *a, const Matrix *b, Matrix *result);
-void matrix_transpose(const Matrix *m, Matrix *result);
-double matrix_dot(const Matrix *a, const Matrix *b);  // For vectors
+KMeans* kmeans_create(int k, int n_features);
+void kmeans_free(KMeans *km);
+void kmeans_fit(KMeans *km, const Matrix *data, int max_iters);
+Matrix* kmeans_predict(const KMeans *km, const Matrix *data);
 
 #endif
